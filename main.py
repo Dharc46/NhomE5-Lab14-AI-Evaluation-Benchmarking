@@ -2,8 +2,12 @@ import asyncio
 import json
 import os
 import time
-from engine.runner import BenchmarkRunner
+from statistics import mean
+from typing import Dict, List, Optional, Tuple
 
+from agent.main_agent import MainAgent
+from engine.runner import BenchmarkRunner
+from engine.llm_judge import LLMJudge
 
 QUALITY_MIN_SCORE = 3.0
 MAX_SCORE_DROP = 0.10
@@ -19,20 +23,12 @@ class ExpertEvaluator:
             "retrieval": {"hit_rate": 1.0, "mrr": 0.5},
         }
 
-class MultiModelJudge:
-    async def evaluate_multi_judge(self, q, a, gt): 
-        return {
-            "final_score": 4.5, 
-            "agreement_rate": 0.8,
-            "reasoning": "Cả 2 model đồng ý đây là câu trả lời tốt."
-        }
 
-async def run_benchmark_with_results(agent_version: str):
-    print(f"🚀 Khởi động Benchmark cho {agent_version}...")
-
-    if not os.path.exists("data/golden_set.jsonl"):
-        print("❌ Thiếu data/golden_set.jsonl. Hãy chạy 'python data/synthetic_gen.py' trước.")
-        return None, None
+def load_dataset(path: str = "data/golden_set.jsonl") -> List[Dict]:
+    if not os.path.exists(path):
+        raise FileNotFoundError(
+            f"Missing {path}. Run 'python data/synthetic_gen.py' before benchmarking."
+        )
 
     with open(path, "r", encoding="utf-8") as f:
         dataset = [json.loads(line) for line in f if line.strip()]
