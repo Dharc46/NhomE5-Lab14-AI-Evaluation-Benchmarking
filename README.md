@@ -29,6 +29,43 @@
 
 ---
 
+## Task Division for Group of 4
+
+### Member 1: Data & Retrieval Evaluation
+- Own the golden dataset design and `data/synthetic_gen.py`.
+- Create 50+ high-quality test cases in `data/golden_set.jsonl`.
+- Add ground-truth document/chunk IDs for every case.
+- Implement and report Retrieval metrics: Hit Rate and MRR.
+- Identify retrieval failures that may cause hallucination.
+
+### Member 2: Evaluation Engine & Multi-Judge Consensus
+- Build the evaluation engine used by `main.py`.
+- Integrate at least 2 different judge models.
+- Implement custom judge scoring and any RAGAS-based metrics.
+- Calculate judge Agreement Rate.
+- Add conflict-handling logic when judge scores disagree.
+
+### Member 3: Benchmark Runner, Cost, and Release Gate
+- Implement the async benchmark runner.
+- Track latency, token usage, and estimated evaluation cost.
+- Generate `reports/summary.json` and `reports/benchmark_results.json`.
+- Compare new-agent results with the previous version.
+- Implement the automatic Release/Rollback gate based on quality, cost, and performance.
+
+### Member 4: Failure Analysis, Optimization, and Submission
+- Run benchmarks and collect failed cases.
+- Cluster failures by root cause: ingestion, chunking, retrieval, prompting, or judging.
+- Write the 5 Whys analysis in `analysis/failure_analysis.md`.
+- Propose optimization to reduce evaluation cost by about 30% without reducing accuracy.
+- Verify all submission files and run `python check_lab.py` before final submission.
+
+### Shared Responsibilities
+- Each member writes an individual reflection in `analysis/reflections/reflection_[Name].md`.
+- All members review the final benchmark results and agree on the release decision.
+- Keep API keys in `.env` only and do not commit secrets.
+
+---
+
 ## 📤 Danh mục nộp bài (Submission Checklist)
 Nhóm nộp 1 đường dẫn Repository (GitHub/GitLab) chứa:
 1. [ ] **Source Code**: Toàn bộ mã nguồn hoàn chỉnh.
